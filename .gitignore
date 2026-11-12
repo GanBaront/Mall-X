@@ -1,0 +1,46 @@
+# ===== 依赖与构建产物 =====
+node_modules/
+unpackage/
+dist/
+build/
+target/
+*.class
+*.jar
+*.war
+
+# ===== 运行时数据与本地环境 =====
+.workbuddy/
+output/
+uploads/
+logs/
+*.log
+
+# ===== IDE / 编辑器 =====
+.idea/
+.vscode/
+*.iml
+.hbuilderx/
+
+# ===== 系统文件 =====
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ===== 不入库的报告与临时文件 =====
+Mall-X压力测试报告.html
+沙箱.txt
+
+# ===== 密钥 / 本地凭据（绝不入库）=====
+.env
+.env.*
+!.env.example
+*.p12
+*.pfx
+*.jks
+*.keystore
+*.pem
+*.key
+application-local.yml
+application-local.properties
+沙箱*.txt
+*credentials*.json

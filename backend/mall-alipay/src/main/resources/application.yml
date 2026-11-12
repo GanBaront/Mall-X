@@ -1,0 +1,33 @@
+server:
+  port: 10012
+
+spring:
+  application:
+    name: mall-alipay
+
+mall:
+  # 渠道回调 mall-mgr 的地址（经网关则为 https://localhost:10010/pay/callback）
+  callback-url: http://localhost:10011/pay/callback
+  sign:
+    # 与 mall-mgr 保持一致；默认值仅供本地演示
+    key: ${MALL_SIGN_KEY:local-demo-sign-key-change-me}
+  alipay:
+    # ★ 支付宝沙箱网关（2026 年新版沙箱域名；旧域名 openapi.alipaydev.com 已废弃）
+    gateway: https://openapi-sandbox.dl.alipaydev.com/gateway.do
+    # ★ 沙箱总开关：true=走真实沙箱支付；false=所有渠道走本地模拟收银台
+    sandbox-enabled: true
+    # ★★ 沙箱凭据一律由环境变量注入，绝不写入代码或提交到仓库 ★★
+    # 三项留空时 ALIPAY 渠道自动走本地模拟收银台，项目仍可完整演示下单/支付链路。
+    # 本地使用：把值填进项目根 .env（已被 .gitignore 排除）；不要填回本文件。
+    app-id: "${ALIPAY_APP_ID:}"
+    app-private-key: "${ALIPAY_APP_PRIVATE_KEY:}"
+    alipay-public-key: "${ALIPAY_PUBLIC_KEY:}"
+    # 异步通知地址：需公网可访问（可用内网穿透），留空则仅靠主动查询对账
+    notify-url: ""
+    # 响应验签开关：true=用支付宝公钥验证响应签名；false=跳过（诊断用）
+    verify-response: false
+
+logging:
+  level:
+    root: WARN
+    com.mall: INFO

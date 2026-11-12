@@ -1,0 +1,45 @@
+一、项目启动：
+方式一：直接双击对应的启动脚本：
+backend\启动后端.bat            → 网关10010 + 业务10011 + 支付10012
+frontend\启动PC管理后台.bat      → PC 管理后台 5173 
+frontend\启动移动端H5预览.bat    → 移动端 H5 5175
+
+方式二：手动启动
+ ===== 后端（3 个，在 backend 目录下）=====
+cd 进入\Mall-X\backend目录
+
+start "mall-mgr"     cmd /c "java -jar mall-mgr\target\mall-mgr-1.0.0.jar"
+start "mall-alipay"  cmd /c "java -jar mall-alipay\target\mall-alipay-1.0.0.jar"
+等 5 秒再启动网关
+start "mall-gateway" cmd /c "java -jar mall-gateway\target\mall-gateway-1.0.0.jar"
+
+ ===== PC 管理后台 =====
+cd 进入Mall-X\frontend\pc
+npm run dev
+看到 Local: http://localhost:5173/ 即成功，此窗口不要关
+
+===== 移动端 H5 =====
+cd 进入\Mall-X\frontend\uniapp\mobile
+npm run dev:h5
+
+命令快速验证：netstat -ano | findstr "10010 10011 10012 5173 5175"，5 个 LISTENING 就是全部在线。
+
+
+
+
+二、账密：
+
+角色	             账号	          密码	               用途
+平台管理员	   admin           	admin123	PC 管理后台（5173）
+入驻商户		  merchant		123456		商家端/商家工作台
+普通用户		   user			123456		移动端购物（5175）
+MySQL 数据库	   root			123456		mallDb（后端连接用）
+
+※ 以上均为本地演示账号，仅限本机/内网演示。若把服务部署到公网，
+  必须修改默认口令，并通过项目根 .env 覆盖 MALL_JWT_SECRET / MALL_SIGN_KEY。
+  .env 已被 .gitignore 排除，请勿提交任何真实密钥；模板见 .env.example。
+  首次部署需双击 backend/gen-ssl-cert.bat 生成 HTTPS 自签证书（不入库）。
+
+
+
+

@@ -1,0 +1,25 @@
+/*
+ * 应用入口文件（PC 平台管理后台）
+ * 职责：创建 Vue 应用实例，全局注册 Element Plus 组件库与中文语言包、
+ *       注册所有 Element Plus 图标、挂载路由（router）与全局样式，最终挂载到 #app 容器。
+ */
+
+import { createApp } from 'vue'
+import ElementPlus from 'element-plus'
+import 'element-plus/dist/index.css'
+import zhCn from 'element-plus/es/locale/lang/zh-cn'
+import * as ElementPlusIconsVue from '@element-plus/icons-vue'
+import App from './App.vue'
+import router from './router'
+import './styles/index.css'
+
+const app = createApp(App)
+
+// 注册所有图标
+for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
+  app.component(key, component)
+}
+
+app.use(router)
+app.use(ElementPlus, { locale: zhCn })
+app.mount('#app')

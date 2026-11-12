@@ -1,0 +1,36 @@
+{
+  "name": "Mall-X 在线电商系统",
+  "appid": "",
+  "description": "多商家电商平台移动端（用户购物端）",
+  "versionName": "1.0.0",
+  "versionCode": "100",
+  "vueVersion": "3",
+  "locale": "zh-Hans",
+  "app-plus": {
+    "usingComponents": true,
+    "nvueStyleCompiler": "uni-app",
+    "splashscreen": {
+      "alwaysShowBeforeRender": true,
+      "waiting": true,
+      "autoclose": true,
+      "delay": 0
+    },
+    "modules": {},
+    "distribute": {}
+  },
+  "mp-weixin": {
+    "appid": "",
+    "setting": {
+      "urlCheck": false,
+      "es6": true,
+      "minified": true
+    },
+    "usingComponents": true
+  },
+  "h5": {
+    "title": "在线电商系统",
+    "router": {
+      "mode": "hash"
+    }
+  }
+}

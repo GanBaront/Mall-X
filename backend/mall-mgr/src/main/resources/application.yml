@@ -1,0 +1,56 @@
+server:
+  port: 10011
+
+spring:
+  application:
+    name: mall-mgr
+  datasource:
+    # 指导书数据库：mallDb（本机 MySQL；Docker 部署由 compose 的 SPRING_DATASOURCE_URL 覆盖）
+    url: jdbc:mysql://localhost:3306/mallDb?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&createDatabaseIfNotExist=true
+    username: root
+    password: ${MALL_DB_PASSWORD:123456}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: false
+  servlet:
+    multipart:
+      # 头像/图片上传（POST /api/upload）：单文件上限 2MB
+      max-file-size: 2MB
+      max-request-size: 2MB
+
+mall:
+  jwt:
+    # 与 mall-gateway 保持一致；默认值仅供本地演示，非本机部署必须覆盖 MALL_JWT_SECRET
+    secret: ${MALL_JWT_SECRET:local-demo-jwt-secret-change-me-32bytes}
+    expiration: 86400000
+  sign:
+    # 指导书要求业务接口携带 sign（MD5）。前端现有调用尚未统一加签，默认关闭；
+    # 联调阶段置为 true 后，所有交易类接口将强制验签。
+    required: false
+    key: ${MALL_SIGN_KEY:local-demo-sign-key-change-me}
+  alipay:
+    # 支付微服务地址（本机直连，网关统一入口为 https://localhost:10010）
+    base-url: http://localhost:10012
+    # 支付完成后浏览器回跳地址（H5 端「我的订单」页；App 端不依赖回跳，靠主动对账同步）
+    return-url: http://localhost:5175/#/pages/orders/orders
+  # 图片上传存储目录（默认 mall-mgr 运行目录下 uploads，经 /upload/** 静态访问）
+  upload:
+    dir: uploads
+  # 订单超时未支付自动关闭（分钟）
+  order:
+    pay-timeout-minutes: 30
+  init:
+    # 首次启动演示交易数据开关：true=空库时自动生成近 7 天演示订单/退款/日志；
+    # false=不生成（清空测试订单后保持干净状态，需要演示数据时改回 true 重启）
+    demo-orders: false
+
+logging:
+  level:
+    root: WARN
+    com.mall: INFO

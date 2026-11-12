@@ -1,0 +1,43 @@
+server:
+  port: 10010
+  ssl:
+    # 指导书统一入口：https://localhost:10010（自签名证书，前端代理 secure:false）
+    # ssl.p12 是本地生成的自签证书，不入库；新环境首次部署先跑 backend/gen-ssl-cert.bat
+    enabled: true
+    key-store: classpath:ssl.p12
+    # 证书库口令不是秘密（私钥文件才是），默认值与 gen-ssl-cert.bat 保持一致
+    key-store-password: ${MALL_SSL_PASSWORD:MallXGw2026Local}
+    key-store-type: PKCS12
+
+spring:
+  application:
+    name: mall-gateway
+  cloud:
+    gateway:
+      routes:
+        # 业务微服务：认证/商户/商品/订单/支付/退款/统计 全部由 mall-mgr 承载
+        - id: mall-mgr
+          uri: http://localhost:10011
+          predicates:
+            - Path=/**
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOriginPatterns: "*"
+            allowedMethods: "*"
+            allowedHeaders: "*"
+
+mall:
+  jwt:
+    # 与 mall-mgr 保持一致（HS256 需要 >= 32 字节）。
+    # 默认值仅供本地演示；任何非本机部署必须用环境变量 MALL_JWT_SECRET 覆盖。
+    secret: ${MALL_JWT_SECRET:local-demo-jwt-secret-change-me-32bytes}
+  rate-limit:
+    enabled: true
+    max-requests: 200
+    window-seconds: 10
+
+logging:
+  level:
+    root: WARN
+    com.mall: INFO
